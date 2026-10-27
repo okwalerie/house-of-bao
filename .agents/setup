@@ -23,4 +23,13 @@ fi
 echo "==> Installing web app dependencies"
 time npm ci --prefix "$repo_root/house-of-bao" --no-audit --no-fund
 
+# Dragology is an additional repository that only some orbs mount.
+dragology_root="$(dirname "$repo_root")/repos/dragology"
+if [[ -f "$dragology_root/pnpm-lock.yaml" ]]; then
+  echo "==> Installing Dragology dependencies"
+  time pnpm install --dir "$dragology_root" --frozen-lockfile
+else
+  echo "==> Skipping Dragology dependencies: $dragology_root not present"
+fi
+
 echo "==> Orb setup complete"
